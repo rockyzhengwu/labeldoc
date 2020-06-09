@@ -13,6 +13,7 @@
 #include "labelwidget.h"
 #include "filelistwidget.h"
 #include "shape.h"
+#include "binarydialog.h"
 
 class MainWindow : public QMainWindow
 {
@@ -43,6 +44,7 @@ protected slots:
     void openProject(QString filename = "");
     void fileSelectionChange();
     void addNewShape(Shape *shape);
+    void startBinaryDialog();
 
 
 
@@ -61,6 +63,8 @@ private:
     QAction *editMode_;
 
     QAction *deleteShape_;
+
+    QAction *binaryAction_;
 
 //    QAction *newProject_;
     QAction *saveAction_;
@@ -91,6 +95,9 @@ private:
     QListWidget *imageNameListWidget_;
 
     QString getLabelFileName(QString imagePath);
+
+    BinaryDialog *binaryDialog_;
+
 };
 
 #endif // MAINWINDOW_H

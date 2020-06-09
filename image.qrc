@@ -42,5 +42,7 @@
         <file>icons/line.png</file>
         <file>icons/point.png</file>
         <file>icons/new-project.png</file>
+        <file>icons/binary.png</file>
+        <file>icons/analysis.png</file>
     </qresource>
 </RCC>

@@ -4,6 +4,7 @@
 #include <QWidget>
 class FileListWidget:public QWidget
 {
+
 public:
     explicit FileListWidget(QWidget *parent=nullptr);
 

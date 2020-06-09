@@ -53,6 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
 //    mainlayout->addWidget(canvas_, 0, 0);
 //    mainlayout->addWidget(labelWidget_, 0, 1);
 
+
 }
 
 
@@ -97,6 +98,9 @@ void MainWindow::createActions(){
     // project
 //    newProject_ = new QAction(QPixmap(":/icons/icons/new-project.png"), "New Project");
 //    connect(newProject_, &QAction::triggered, this, [this]{this->newProject();});
+
+    binaryAction_ = new QAction(QPixmap(":/icons/icons/analysis.png"), "Segment");
+    connect(binaryAction_, &QAction::triggered, this, [this]{this->startBinaryDialog();});
 }
 
 
@@ -161,6 +165,8 @@ void MainWindow::createToolBar(){
     topToolbar->addAction(editMode_);
     topToolbar->addSeparator();
     topToolbar->addAction(deleteShape_);
+    topToolbar->addSeparator();
+    topToolbar->addAction(binaryAction_);
 
     addToolBar(Qt::TopToolBarArea, topToolbar);
 }
@@ -441,4 +447,12 @@ void MainWindow::loadLabelFile(QString fileName){
 
 void MainWindow::addNewShape(Shape *shape){
     labelWidget_->addLabel(shape->getLabel(), shape->getLineColor());
+}
+
+void MainWindow::startBinaryDialog(){
+    if(currImage_.isNull()){
+        return;
+    }
+    binaryDialog_ = new BinaryDialog(currImage_, this);
+    binaryDialog_->show();
 }

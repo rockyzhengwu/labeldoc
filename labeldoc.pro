@@ -25,9 +25,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
+INCLUDEPATH += /usr/local/include/opencv4
+LIBS += -L/usr/local/opt/opencv/lib/
+LIBS += -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_imgcodecs -lopencv_tracking -lopencv_video -lopencv_videoio -lopencv_dnn
+
+
 SOURCES += \
+        binarydialog.cpp \
         canvas.cpp \
         filelistwidget.cpp \
+        imagebinary/bernsen.cpp \
+        imagebinary/localthreshold.cpp \
+        imagebinary/niblack.cpp \
+        imagebinary/nick.cpp \
+        imagebinary/otsu.cpp \
+        imagebinary/padding.cpp \
+        imagebinary/sauvola.cpp \
+        imagebinary/wolf.cpp \
+        imageutil.cpp \
+        imageviewer.cpp \
         labelwidget.cpp \
         main.cpp \
         mainwindow.cpp \
@@ -35,8 +51,12 @@ SOURCES += \
         statestorage.cpp
 
 HEADERS += \
+        binarydialog.h \
         canvas.h \
         filelistwidget.h \
+        imagebinary/binary.h \
+        imageutil.h \
+        imageviewer.h \
         labelwidget.h \
         mainwindow.h \
         shape.h \
