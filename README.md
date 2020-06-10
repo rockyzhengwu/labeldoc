@@ -12,6 +12,8 @@ add some binary algorithm:
  - Sauvola - "Adaptive document image binarization", 1999.
  - Wolf - "Extraction and Recognition of Artificial Text in Multimedia Documents", 2003.
  - NICK - "Comparison of Niblack inspired Binarization methods for ancient documents", 2009.
+ - ISauvola - "ISauvola: Improved Sauvola’s Algorithm for Document Image Binarization", 2016.
+ - WAN - "Binarization of Document Image Using Optimum Threshold Modification", 2018.
 
 ![source](./doc/images/binary_source_example.png)
 
