@@ -52,14 +52,21 @@ void BinaryDialog::createBinaryUI(){
       algorithm_->addItem("Nick");
       algorithm_->addItem("Bernsen");
       algorithm_->addItem("Wolf");
+      algorithm_->addItem("ISauvola");
+      algorithm_->addItem("Wan");
+      algorithm_->addItem("TRSingh");
+
       windowSizeSlider_ = new QSlider(Qt::Orientation::Horizontal);
       windowSizeSlider_->setRange(1, 500);
+      windowSizeSlider_->setValue(75);
       QString windowSize = QString::number(windowSizeSlider_->value());
       qDebug()<< "windowSize" << windowSize;
       windowSizeLabel_ =new QLabel("Window Size: " + windowSize);
       kSpinBox_ = new QDoubleSpinBox();
       kSpinBox_->setRange(-2.0, 2.0);
       kSpinBox_->setSingleStep(0.01);
+      kSpinBox_->setValue(0.34);
+
       kLabel_ = new QLabel("K: ") ;
       binaryButton_ = new QPushButton("To Binary ");
 
@@ -117,7 +124,8 @@ void BinaryDialog::algorithmChange(){
         contrastLimitLabel_->setVisible(false);
         contrastLimit_->setVisible(false);
 
-    } else if(algorithmName=="NiBlack" || algorithmName=="Nick" || algorithmName=="Sauvola" || algorithmName=="Wolf"){
+    } else if(algorithmName=="NiBlack" || algorithmName=="Nick" || algorithmName=="Sauvola"
+              || algorithmName=="Wolf" || algorithmName=="ISauvola" || algorithmName=="Wan" || algorithmName=="TRSingh"){
         windowSizeLabel_->setVisible(true);
         windowSizeSlider_->setVisible(true);
         kLabel_->setVisible(true);
@@ -158,7 +166,9 @@ void BinaryDialog::toBinary(){
         qDebug() << "windowSize == 0";
         return;
     }
+
    cv::imwrite("/Users/zhengwu/workspace/qtprojects/github/gray_image.jpg", grayImage);
+
    if(algorithmName=="OTSU"){
        imb::otsu(grayImage, binarycv);
    }
@@ -175,7 +185,15 @@ void BinaryDialog::toBinary(){
    } else if(algorithmName=="Wolf"){
        qDebug() << "use wolf";
        imb::wolf(grayImage, binarycv, cv::Size(ws, ws), kSpinBox_->value());
+   } else if(algorithmName=="ISauvola"){
+        binarycv = cv::Mat(cvImage.size().height, cvImage.size().width, CV_8U, cv::Scalar(255));
+       imb::isauvola(grayImage, binarycv, cv::Size(ws, ws), kSpinBox_->value());
+   } else if(algorithmName=="Wan") {
+       imb::wan(grayImage, binarycv, cv::Size(ws, ws), kSpinBox_->value());
+   } else if(algorithmName=="TRSingh"){
+       imb::trsingh(grayImage, binarycv, cv::Size(ws,ws),kSpinBox_->value());
    }
+
    cv::imwrite("/Users/zhengwu/workspace/qtprojects/github/binary_image.jpg", binarycv);
    binaryImage_ = cvMatToQImage(binarycv);
    showBinaryImage();

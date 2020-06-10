@@ -17,6 +17,11 @@ namespace imb
 
    void bernsen(cv::Mat im_gray, cv::Mat &dest, cv::Size window_size, unsigned char threshold, int contrast_limit);
 
+   void highContrastImage(cv::Mat &im_gray, cv::Mat &high_contrast_image);
+
+   void isauvola(cv::Mat im_gray, cv::Mat &dest, cv::Size window_size, double k);
+   void wan(cv::Mat im_gray, cv::Mat &dest, cv::Size window_size, double k);
+   void trsingh(cv::Mat im_gray, cv::Mat &dest, cv::Size window_size, double k);
 }
 
 #endif

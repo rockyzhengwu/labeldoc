@@ -35,12 +35,15 @@ SOURCES += \
         canvas.cpp \
         filelistwidget.cpp \
         imagebinary/bernsen.cpp \
+        imagebinary/isauvola.cpp \
         imagebinary/localthreshold.cpp \
         imagebinary/niblack.cpp \
         imagebinary/nick.cpp \
         imagebinary/otsu.cpp \
         imagebinary/padding.cpp \
         imagebinary/sauvola.cpp \
+        imagebinary/trsingh.cpp \
+        imagebinary/wan.cpp \
         imagebinary/wolf.cpp \
         imageutil.cpp \
         imageviewer.cpp \
