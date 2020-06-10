@@ -3,6 +3,22 @@ This is a image label tool  especially for document analysis or OCR task. It jus
 This project write by c++ use QT5, but some function translate from [labelme](https://github.com/wkentaro/labelme)
 and inspired by project [deeplabel](https://github.com/jveitchmichaelis/deeplabel)
 
+#### udpate at 2020/06/09 
+add some binary algorithm:
+
+ - Otsu - "A threshold selection method from gray-level histograms", 1979.
+ - Bernsen - "Dynamic thresholding of gray-level images", 1986.
+ - Niblack - "An Introduction to Digital Image Processing", 1986.
+ - Sauvola - "Adaptive document image binarization", 1999.
+ - Wolf - "Extraction and Recognition of Artificial Text in Multimedia Documents", 2003.
+ - NICK - "Comparison of Niblack inspired Binarization methods for ancient documents", 2009.
+
+![source](./doc/images/binary_source_example.png)
+
+result:
+![result](./doc/images/binary_result_example.png)
+
+
 
 
 ![截图](./doc/images/labeltool.png)
