@@ -25,13 +25,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
-INCLUDEPATH += /usr/local/include/opencv4
-LIBS += -L/usr/local/opt/opencv/lib/
+INCLUDEPATH += /usr/local/include/opencv4 \
+     /usr/local/include \
+     /usr/local/include/leptonica
+
+LIBS += -L/usr/local/opt/opencv/lib
 LIBS += -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_imgcodecs -lopencv_tracking -lopencv_video -lopencv_videoio -lopencv_dnn
+
+LIBS += -L/usr/local/lib -llept -ltesseract
+
+
+
 
 
 SOURCES += \
-        binarydialog.cpp \
+        autolabeldialog.cpp \
         canvas.cpp \
         filelistwidget.cpp \
         imagebinary/bernsen.cpp \
@@ -50,11 +58,13 @@ SOURCES += \
         labelwidget.cpp \
         main.cpp \
         mainwindow.cpp \
+        models/pageitem.cpp \
+        models/tesseract_model.cpp \
         shape.cpp \
         statestorage.cpp
 
 HEADERS += \
-        binarydialog.h \
+        autolabeldialog.h \
         canvas.h \
         filelistwidget.h \
         imagebinary/binary.h \
@@ -62,8 +72,11 @@ HEADERS += \
         imageviewer.h \
         labelwidget.h \
         mainwindow.h \
+        models/pageitem.h \
         shape.h \
-        statestorage.h
+        statestorage.h \
+        models/tesseract_model.h
+
 
 
 

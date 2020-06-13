@@ -146,3 +146,13 @@ QString LabelWidget::getOneColor(){
     }
     return "red";
 }
+
+bool LabelWidget::hasLabel(QString labelName){
+    return uniqueLabels_.contains(labelName);
+}
+QString LabelWidget::getColor(QString labelName){
+    if(uniqueLabels_.contains(labelName)){
+        return uniqueLabelColors_[uniqueLabels_.indexOf(labelName)];
+    }
+    return "black";
+}

@@ -25,10 +25,12 @@ public:
     explicit LabelWidget(QWidget *parent=nullptr);
 //    QString getCurrentLabel();
     void addLabel(QString labelName, QString color);
+    bool hasLabel(QString labelName);
+    QString getColor(QString labelName);
 
 signals:
 
-protected slots:
+public slots:
     void addLabel(QString labelName );
     void deleteLabel();
     void changeCurrentLabel();

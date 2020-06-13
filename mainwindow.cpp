@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "statestorage.h"
+#include "models/pageitem.h"
+#include "shape.h"
 
 #include <QMenu>
 #include <QMenuBar>
@@ -99,7 +101,7 @@ void MainWindow::createActions(){
 //    newProject_ = new QAction(QPixmap(":/icons/icons/new-project.png"), "New Project");
 //    connect(newProject_, &QAction::triggered, this, [this]{this->newProject();});
 
-    binaryAction_ = new QAction(QPixmap(":/icons/icons/analysis.png"), "Segment");
+    binaryAction_ = new QAction(QPixmap(":/icons/icons/analysis.png"), "Auto Label");
     connect(binaryAction_, &QAction::triggered, this, [this]{this->startBinaryDialog();});
 }
 
@@ -331,8 +333,8 @@ void MainWindow::updateMode(bool isEdit, Shape::ShapeType shapeType) {
     }
 }
 
-void MainWindow::openProject(QString fileName){
-}
+//void MainWindow::openProject(QString fileName){
+//}
 
 void MainWindow::importDirImages(QString dirName){
     QList<QByteArray>  formats = QImageReader::supportedImageFormats();
@@ -436,6 +438,9 @@ QString MainWindow::getLabelFileName(QString imagePath){
 
 void MainWindow::loadLabelFile(QString fileName){
     QFile loadFile(fileName);
+    if(!loadFile.exists()){
+        return;
+    }
     loadFile.open(QIODevice::ReadOnly | QIODevice::Text);
     QByteArray json_data = loadFile.readAll();
     auto jsonDoc = QJsonDocument::fromJson(json_data);
@@ -453,6 +458,33 @@ void MainWindow::startBinaryDialog(){
     if(currImage_.isNull()){
         return;
     }
-    binaryDialog_ = new BinaryDialog(currImage_, this);
-    binaryDialog_->show();
+    if(autoLabelDialog_==nullptr){
+       autoLabelDialog_ = new AutoLabelDialog(currImage_, this);
+       connect(autoLabelDialog_, SIGNAL(finishAndSave()), this, SLOT(saveAutoLabelResult()));
+    }else {
+     autoLabelDialog_->setSourceImage(currImage_);
+    }
+    autoLabelDialog_->show();
 }
+
+void MainWindow::saveAutoLabelResult(){
+    qDebug() << "save autto label result";
+    std::vector<ocrmodel::PageItem> autoResult = autoLabelDialog_->getResult();
+
+    if(!labelWidget_->hasLabel("textline")){
+       labelWidget_->addLabel("textline");
+    }
+
+    for(ocrmodel::PageItem pit:autoResult){
+        Shape *shape = new Shape("textline", Shape::POLYGON);
+        shape->setShapeState(Shape::ShapeState::NoState);
+        for(ocrmodel::Point p: pit.getPoints()){
+            shape->addPoint(QPointF(p.x, p.y));
+        }
+        shape->setLineColor(QColor(labelWidget_->getColor("textline")));
+       canvas_->addShape(shape);
+    }
+    qDebug() << "canvas: shapes";
+    canvas_->repaint();
+}
+

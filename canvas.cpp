@@ -427,3 +427,7 @@ void Canvas::resetState(){
 int Canvas::shapeSize(){
     return shapes_.size();
 }
+
+void Canvas::addShape(Shape *shape){
+    shapes_.append(shape);
+}

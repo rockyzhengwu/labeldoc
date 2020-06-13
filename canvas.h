@@ -30,6 +30,7 @@ public:
     bool isNeedSave();
     void resetState();
     int shapeSize();
+    void addShape(Shape *shape);
 
 
 protected:

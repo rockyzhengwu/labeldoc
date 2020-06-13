@@ -1,34 +1,109 @@
-#include "binarydialog.h"
+#include "autolabeldialog.h"
 #include "imagebinary/binary.h"
+#include "models/tesseract_model.h"
+#include "models/pageitem.h"
 #include "imageutil.h"
+
 #include <QGroupBox>
 #include <QDebug>
+#include <vector>
+#include <cstdlib>
+#include <stdlib.h>
+#include <time.h>
 
-BinaryDialog::BinaryDialog(QImage image, QWidget *parent) :
+AutoLabelDialog::AutoLabelDialog(QImage image, QWidget *parent) :
     QDialog (parent),
     sourceImage_(image)
 {
 
-    qDebug() << "imge format: " << sourceImage_.format();
+   setWindowState(Qt::WindowMaximized);
+   createUI();
+}
 
-     setWindowState(Qt::WindowMaximized);
+//BinaryDialog::~BinaryDialog(){
+//    if(tesseractWrap_)   {
+//        tesseractWrap_->close();
+//    }
+//   QDialog::~QDialog();
+//}
+
+void AutoLabelDialog::setSourceImage(QImage sourceImage){
+    sourceImage_= sourceImage;
+    imageViewer_->resetImage(sourceImage);
+}
+
+
+void AutoLabelDialog::createUI(){
      mainLayout_= new QHBoxLayout();
      imageViewer_ = new ImageViewer(sourceImage_);
      imageViewer_->setMinimumSize(800,800);
 
      rightLayout_ = new QVBoxLayout();
+
      grayButton_ = new QPushButton("To Gray");
+
      createBinaryUI();
+     createModelUI();
+
+     saveResultButton_ = new QPushButton("Save Result");
+     cancleResultButton_ = new QPushButton("Cancle");
+     QHBoxLayout *butLayout = new QHBoxLayout();
+     butLayout->addWidget(saveResultButton_);
+     butLayout->addWidget(cancleResultButton_);
+     rightLayout_->addLayout(butLayout);
 
      mainLayout_->addWidget(imageViewer_);
      mainLayout_->addLayout(rightLayout_);
      mainLayout_->setStretch(0, 4);
      mainLayout_->setStretch(1, 1);
+     connect(saveResultButton_, SIGNAL(clicked()), this, SLOT(saveLabelResult()));
+     connect(cancleResultButton_, SIGNAL(clicked()), this, SLOT(quitNotSave()));
+
      connect(grayButton_, SIGNAL(clicked()), this, SLOT(showGrayImage()));
-
-
 }
-void BinaryDialog::windowSizeChange(){
+
+void AutoLabelDialog::createModelUI(){
+
+    QGroupBox *modelGroupBox = new QGroupBox(tr("OCR Models"));
+    QVBoxLayout *modelLayout = new QVBoxLayout();
+
+    models_ = new QComboBox();
+    models_->addItem("tesseract");
+    modelButton_ = new QPushButton("Run Model");
+    modelLayout->addWidget(models_);
+    modelLayout->addWidget(modelButton_);
+    modelGroupBox->setLayout(modelLayout);
+    rightLayout_->addWidget(modelGroupBox);
+
+    connect(modelButton_, SIGNAL(clicked()), this, SLOT(startModel()));
+}
+
+void AutoLabelDialog::startModel(){
+    QString modelName = models_->currentText();
+    if(modelName=="tesseract"){
+        if (tesseractWrap_==nullptr){
+            tesseractWrap_ = new ocrmodel::TesseractHandler();
+        }
+
+        qDebug() << "start tesseract";
+        if(binaryImage_.isNull()){
+            qDebug() << "analysis source file";
+            tesseractWrap_->tesseract_analysis(QImageToCvMat(sourceImage_));
+            return;
+        }
+        else {
+            cv::Mat bimg = QImageToCvMat(binaryImage_);
+            qDebug() << "start tessearct binary model" << bimg.size().width << " height "<< bimg.size().height << " binary" <<binaryImage_.format();
+            ocrResults_ = tesseractWrap_->tesseract_analysis(bimg.clone());
+            showOcrResult();
+        }
+    }
+}
+
+
+
+
+void AutoLabelDialog::windowSizeChange(){
     QString windowSizeValue = QString::number(windowSizeSlider_->value());
     windowSizeLabel_->setText("Window Size: " + windowSizeValue);
 //    update();
@@ -37,12 +112,12 @@ void BinaryDialog::windowSizeChange(){
 //    toBinary();
 }
 
-void BinaryDialog::kChange(){
+void AutoLabelDialog::kChange(){
      // TODO use
 //    toBinary();
 }
 
-void BinaryDialog::createBinaryUI(){
+void AutoLabelDialog::createBinaryUI(){
       QGroupBox *binaryGroupBox = new QGroupBox(tr("Binary Algorithm"));
       QVBoxLayout *binaryLayout = new QVBoxLayout();
       algorithm_ = new QComboBox();
@@ -65,7 +140,7 @@ void BinaryDialog::createBinaryUI(){
       kSpinBox_ = new QDoubleSpinBox();
       kSpinBox_->setRange(-2.0, 2.0);
       kSpinBox_->setSingleStep(0.01);
-      kSpinBox_->setValue(0.34);
+      kSpinBox_->setValue(0.25);
 
       kLabel_ = new QLabel("K: ") ;
       binaryButton_ = new QPushButton("To Binary ");
@@ -111,7 +186,7 @@ void BinaryDialog::createBinaryUI(){
 }
 
 
-void BinaryDialog::algorithmChange(){
+void AutoLabelDialog::algorithmChange(){
     QString algorithmName = algorithm_->currentText();
     qDebug() <<"change algorithm name: " << algorithmName;
     if(algorithmName=="OTSU"){
@@ -154,7 +229,7 @@ void BinaryDialog::algorithmChange(){
 }
 
 
-void BinaryDialog::toBinary(){
+void AutoLabelDialog::toBinary(){
    cv::Mat cvImage = QImageToCvMat(sourceImage_, true);
    cv::Mat grayImage;
    cvtColor( cvImage, grayImage, cv::COLOR_BGR2GRAY );
@@ -167,8 +242,7 @@ void BinaryDialog::toBinary(){
         return;
     }
 
-   cv::imwrite("/Users/zhengwu/workspace/qtprojects/github/gray_image.jpg", grayImage);
-
+//   cv::imwrite("/Users/zhengwu/workspace/qtprojects/github/gray_image.jpg", grayImage);
    if(algorithmName=="OTSU"){
        imb::otsu(grayImage, binarycv);
    }
@@ -193,22 +267,53 @@ void BinaryDialog::toBinary(){
    } else if(algorithmName=="TRSingh"){
        imb::trsingh(grayImage, binarycv, cv::Size(ws,ws),kSpinBox_->value());
    }
-
-   cv::imwrite("/Users/zhengwu/workspace/qtprojects/github/binary_image.jpg", binarycv);
+//   cv::imwrite("/Users/zhengwu/workspace/qtprojects/github/binary_image.jpg", binarycv);
    binaryImage_ = cvMatToQImage(binarycv);
    showBinaryImage();
 }
 
 
-void BinaryDialog::showBinaryImage(){
+void AutoLabelDialog::showBinaryImage(){
     imageViewer_->resetImage(binaryImage_);
 }
 
-
-void BinaryDialog::showGrayImage(){
+void AutoLabelDialog::showOcrResult(){
+    qDebug() << "show ocr reslt " << binaryImage_.size();;
     cv::Mat cvImage = QImageToCvMat(sourceImage_);
+    srand((unsigned)time(nullptr));
+
+    for(ocrmodel::PageItem item:ocrResults_){
+        std::vector<cv::Point> cvPoints;
+        std::vector<ocrmodel::Point> points = item.getPoints();
+        for(ocrmodel::Point p: points){
+           cvPoints.push_back(cv::Point(p.x, p.y));
+        }
+        cv::Scalar color(std::rand() % 256, std::rand()% 256, std::rand()%256);
+//        cv::Rect rect(p1.x, p1.y, p2.x-p1.x, p2.y-p1.y);
+        std::vector<std::vector<cv::Point>> c;
+        c.push_back(cvPoints);
+        cv::drawContours(cvImage, c, 0, color, 2);
+    }
+    imageViewer_->resetImage(cvMatToQImage(cvImage));
+}
+
+void AutoLabelDialog::showGrayImage(){
+    cv::Mat cvImage = QImageToCvMat(sourceImage_, true);
     cv::Mat grayImage;
     cvtColor( cvImage, grayImage, cv::COLOR_BGR2GRAY );
     QImage bim = cvMatToQImage(grayImage)    ;
     imageViewer_->resetImage(bim);
+}
+
+void AutoLabelDialog::saveLabelResult(){
+    close();
+    emit finishAndSave();
+}
+
+void AutoLabelDialog::quitNotSave(){
+   close();
+}
+
+std::vector<ocrmodel::PageItem> AutoLabelDialog::getResult(){
+    return ocrResults_;
 }

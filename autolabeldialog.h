@@ -13,19 +13,28 @@
 #include <QDockWidget>
 #include <QPushButton>
 #include <QDoubleSpinBox>
+#include <vector>
 
 #include <opencv2/opencv.hpp>
 
 #include "imageviewer.h"
 
-class BinaryDialog: public QDialog
+#include "models/pageitem.h"
+#include "models/tesseract_model.h"
+
+class AutoLabelDialog: public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit BinaryDialog(QImage sourceImage, QWidget *parent=nullptr);
+    explicit AutoLabelDialog(QImage sourceImage, QWidget *parent=nullptr);
+    void setSourceImage(QImage sourceImage);
+    std::vector<ocrmodel::PageItem> getResult();
+
+//    ~BinaryDialog();
 
 signals:
+    void finishAndSave();
 
 protected slots:
     void windowSizeChange();
@@ -34,6 +43,10 @@ protected slots:
     void showBinaryImage();
     void showGrayImage();
     void algorithmChange();
+    void startModel();
+    void saveLabelResult();
+    void quitNotSave();
+
 
 private:
     QHBoxLayout *mainLayout_ ;
@@ -60,7 +73,25 @@ private:
     QLabel *contrastLimitLabel_;
     QSpinBox *contrastLimit_;
 
+
+    // cor model  and tool
+
+    QComboBox *models_;
+    QPushButton *modelButton_;
+
+    std::vector<ocrmodel::PageItem> ocrResults_;
+    QImage ocrResultImage_;
+    ocrmodel::TesseractHandler *tesseractWrap_;
     void createBinaryUI();
+    void createModelUI();
+    void createUI();
+    void showOcrResult();
+
+
+    // save
+    QPushButton *saveResultButton_;
+    QPushButton *cancleResultButton_;
+
 
 };
 

@@ -145,7 +145,6 @@ public:
                             static_cast<size_t>(swapped.bytesPerLine())
                             ).clone();
          }
-
          // 8-bit, 1 channel
          case QImage::Format_Indexed8:
          {
@@ -154,15 +153,21 @@ public:
                           const_cast<uchar*>(inImage.bits()),
                           static_cast<size_t>(inImage.bytesPerLine())
                           );
-
             return (inCloneImageData ? mat.clone() : mat);
          }
-
+         case QImage::Format_Grayscale8:
+         {
+              cv::Mat  mat( inImage.height(), inImage.width(),
+                            CV_8UC1,
+                            const_cast<unsigned char *>(inImage.bits()),
+                            static_cast<size_t>(inImage.bytesPerLine())
+                            );
+              return (inCloneImageData ? mat.clone() : mat);
+         }
          default:
             qWarning() << "ASM::QImageToCvMat() - QImage format not handled in switch:" << inImage.format();
             break;
       }
-
       return cv::Mat();
    }
 

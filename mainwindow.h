@@ -13,7 +13,7 @@
 #include "labelwidget.h"
 #include "filelistwidget.h"
 #include "shape.h"
-#include "binarydialog.h"
+#include "autolabeldialog.h"
 
 class MainWindow : public QMainWindow
 {
@@ -41,10 +41,13 @@ protected slots:
     void deleteSelectShape();
 
     // project
-    void openProject(QString filename = "");
+//    void openProject(QString filename = "");
     void fileSelectionChange();
     void addNewShape(Shape *shape);
     void startBinaryDialog();
+
+    // auto label
+    void saveAutoLabelResult();
 
 
 
@@ -96,7 +99,7 @@ private:
 
     QString getLabelFileName(QString imagePath);
 
-    BinaryDialog *binaryDialog_;
+    AutoLabelDialog *autoLabelDialog_;
 
 };
 
