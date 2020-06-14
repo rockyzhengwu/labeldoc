@@ -1,10 +1,12 @@
 This is a image label tool  especially for document analysis or OCR task. It just a common label tool for object detection or image segmentation so far,  some features about document analysis will be implement later;
 
-This project write by c++ use QT5, but some function translate from [labelme](https://github.com/wkentaro/labelme)
-and inspired by project [deeplabel](https://github.com/jveitchmichaelis/deeplabel)
+![tesseract](./doc/tessearct_auto_label.png)
 
-#### udpate at 2020/06/09 
-add some binary algorithm:
+### auto label 
+   can use tesseract to auto label the text line 
+   
+
+### binary algorithm:
 
  - Otsu - "A threshold selection method from gray-level histograms", 1979.
  - Bernsen - "Dynamic thresholding of gray-level images", 1986.
@@ -24,3 +26,6 @@ result:
 
 
 ![截图](./doc/images/labeltool.png)
+
+This project write by c++ use QT5, but some function translate from [labelme](https://github.com/wkentaro/labelme)
+and inspired by project [deeplabel](https://github.com/jveitchmichaelis/deeplabel)
