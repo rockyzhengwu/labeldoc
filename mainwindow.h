@@ -44,7 +44,7 @@ protected slots:
 //    void openProject(QString filename = "");
     void fileSelectionChange();
     void addNewShape(Shape *shape);
-    void startBinaryDialog();
+    void startAutoLavelDialog();
 
     // auto label
     void saveAutoLabelResult();

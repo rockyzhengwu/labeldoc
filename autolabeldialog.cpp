@@ -267,7 +267,7 @@ void AutoLabelDialog::toBinary(){
    } else if(algorithmName=="TRSingh"){
        imb::trsingh(grayImage, binarycv, cv::Size(ws,ws),kSpinBox_->value());
    }
-//   cv::imwrite("/Users/zhengwu/workspace/qtprojects/github/binary_image.jpg", binarycv);
+   cv::imwrite("/Users/zhengwu/workspace/qtprojects/github/binary_image.jpg", binarycv);
    binaryImage_ = cvMatToQImage(binarycv);
    showBinaryImage();
 }
@@ -285,14 +285,17 @@ void AutoLabelDialog::showOcrResult(){
     for(ocrmodel::PageItem item:ocrResults_){
         std::vector<cv::Point> cvPoints;
         std::vector<ocrmodel::Point> points = item.getPoints();
-        for(ocrmodel::Point p: points){
-           cvPoints.push_back(cv::Point(p.x, p.y));
-        }
+        ocrmodel::Point p1= points[0];
+        ocrmodel::Point p2 = points[1];
+//        for(ocrmodel::Point p: points){
+//           cvPoints.push_back(cv::Point(p.x, p.y));
+//        }
         cv::Scalar color(std::rand() % 256, std::rand()% 256, std::rand()%256);
-//        cv::Rect rect(p1.x, p1.y, p2.x-p1.x, p2.y-p1.y);
+        cv::Rect rect(p1.x, p1.y, p2.x-p1.x, p2.y-p1.y);
         std::vector<std::vector<cv::Point>> c;
-        c.push_back(cvPoints);
-        cv::drawContours(cvImage, c, 0, color, 2);
+        cv::rectangle(cvImage, rect, color , 2);
+//        c.push_back(cvPoints);
+//        cv::drawContours(cvImage, c, 0, color, 2);
     }
     imageViewer_->resetImage(cvMatToQImage(cvImage));
 }

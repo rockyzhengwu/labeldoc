@@ -140,7 +140,7 @@ void Canvas::mouseMoveEvent(QMouseEvent *event){
    // 编辑模式下
    else if (StateStorage::canvasMode == Canvas::EDIT){
        // 按住左键拖动
-       if(event->buttons() & Qt::LeftButton){
+       if(event->button() & Qt::LeftButton){
            for (Shape *shape: shapes_){
              if(shape->isSelected() || shape->hasSelectedVertex()){
                   shape->setShapeState(Shape::Moving);

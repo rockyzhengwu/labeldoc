@@ -135,9 +135,9 @@ std::vector<PageItem> TesseractHandler::tesseract_analysis(cv::Mat input_image){
          PageItem item;
          item.setType(PageItem::TEXTLINE);
          item.addPoint(Point{x1, y1});
-         item.addPoint(Point{x1, y2});
+//         item.addPoint(Point{x1, y2});
          item.addPoint(Point{x2, y2});
-         item.addPoint(Point{x2, y1});
+//         item.addPoint(Point{x2, y1});
          all_items.push_back(item);
      }
      api->GetIterator();

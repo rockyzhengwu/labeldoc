@@ -103,7 +103,7 @@ void MainWindow::createActions(){
 //    connect(newProject_, &QAction::triggered, this, [this]{this->newProject();});
 
     binaryAction_ = new QAction(QPixmap(":/icons/icons/analysis.png"), "Auto Label");
-    connect(binaryAction_, &QAction::triggered, this, [this]{this->startBinaryDialog();});
+    connect(binaryAction_, &QAction::triggered, this, [this]{this->startAutoLavelDialog();});
 }
 
 
@@ -455,7 +455,7 @@ void MainWindow::addNewShape(Shape *shape){
     labelWidget_->addLabel(shape->getLabel(), shape->getLineColor());
 }
 
-void MainWindow::startBinaryDialog(){
+void MainWindow::startAutoLavelDialog(){
     if(currImage_.isNull()){
         return;
     }
@@ -479,7 +479,7 @@ void MainWindow::saveAutoLabelResult(){
     }
 
     for(ocrmodel::PageItem pit:autoResult){
-        Shape *shape = new Shape("textline", Shape::POLYGON);
+        Shape *shape = new Shape("textline", Shape::RECTANGLE);
         shape->setShapeState(Shape::ShapeState::NoState);
         for(ocrmodel::Point p: pit.getPoints()){
             shape->addPoint(QPointF(p.x, p.y));
