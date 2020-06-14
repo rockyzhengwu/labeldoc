@@ -1,4 +1,4 @@
-This is a image label tool  especially for document analysis or OCR task. It just a common label tool for object detection or image segmentation so far,  some features about document analysis will be implement later;
+This is a image label tool  especially for document analysis or OCR task. you also can use this to for other task like object etection
 
 ![tesseract](./doc/tessearct_auto_label.png)
 
