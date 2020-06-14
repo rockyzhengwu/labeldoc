@@ -1,7 +1,6 @@
 This is a image label tool  especially for document analysis or OCR task. you also can use this to for other task like object etection
 
-![tesseract](./doc/tessearct_auto_label.png)
-
+<img width="300" height="500" src="./doc/tessearct_auto_label.png"/>
 ### auto label 
    can use tesseract to auto label the text line 
    
@@ -17,15 +16,12 @@ This is a image label tool  especially for document analysis or OCR task. you al
  - ISauvola - "ISauvola: Improved Sauvola’s Algorithm for Document Image Binarization", 2016.
  - WAN - "Binarization of Document Image Using Optimum Threshold Modification", 2018.
 
-![source](./doc/images/binary_source_example.png)
+<img width="300" height="500" src="./doc/images/binary_source_example.png"/>
 
 result:
-![result](./doc/images/binary_result_example.png)
 
+<img width="300" height="500" src="./doc/images/binary_result_example.png"/>
 
-
-
-![截图](./doc/images/labeltool.png)
 
 This project write by c++ use QT5, but some function translate from [labelme](https://github.com/wkentaro/labelme)
 and inspired by project [deeplabel](https://github.com/jveitchmichaelis/deeplabel)
