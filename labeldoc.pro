@@ -29,10 +29,15 @@ INCLUDEPATH += /usr/local/include/opencv4 \
      /usr/local/include \
      /usr/local/include/leptonica
 
+
 LIBS += -L/usr/local/opt/opencv/lib
 LIBS += -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_imgcodecs -lopencv_tracking -lopencv_video -lopencv_videoio -lopencv_dnn
 
 LIBS += -L/usr/local/lib -llept -ltesseract
+
+INCLUDEPATH +=/usr/include/leptonica
+
+LIBS += -llept
 
 
 

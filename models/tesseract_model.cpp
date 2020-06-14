@@ -91,7 +91,7 @@ std::vector<PageItem> TesseractHandler::tesseract_analysis(cv::Mat input_image){
      qDebug()<<"start deskew";
      l_float32    angle, conf;
      Pix* pix1 = pixConvertTo1(pix, 128);
-     deswap(pix1);
+//     deswap(pix1);
 //     pixFindSkew(pix1, &angle, &conf);
 //     pixWriteImpliedFormat("/Users/zhengwu/workspace/qtprojects/github/result1_deskew.jpg", pix1, 0, 0);
 //    qDebug()<<" angle " << angle << " conf" << conf;

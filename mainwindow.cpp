@@ -23,7 +23,8 @@
 
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent),
+      autoLabelDialog_(nullptr)
 {
     settings_ = new QSettings("OcrLabel", "OcrLabel");
 
@@ -458,11 +459,13 @@ void MainWindow::startBinaryDialog(){
     if(currImage_.isNull()){
         return;
     }
+    qDebug()<< "start binaryDialog"  ;
     if(autoLabelDialog_==nullptr){
        autoLabelDialog_ = new AutoLabelDialog(currImage_, this);
        connect(autoLabelDialog_, SIGNAL(finishAndSave()), this, SLOT(saveAutoLabelResult()));
     }else {
-     autoLabelDialog_->setSourceImage(currImage_);
+       qDebug()<<"ner dialog";
+       autoLabelDialog_->setSourceImage(currImage_);
     }
     autoLabelDialog_->show();
 }

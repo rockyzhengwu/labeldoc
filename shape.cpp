@@ -8,7 +8,7 @@
 #include <QJsonArray>
 
 #include <QDebug>
-
+#include <cmath>
 
 
 static QColor VERTEX_FILE_COLOR = QColor(0,255, 0, 255);

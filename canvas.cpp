@@ -6,6 +6,7 @@
 #include <QSize>
 
 #include <algorithm>
+#include <cmath>
 
 Canvas::Canvas(QWidget *parent):QWidget (parent),
     shapes_()
@@ -65,7 +66,7 @@ QPointF Canvas::offsetToCenter(){
 void Canvas::mousePressEvent(QMouseEvent* event){
     QPointF pos = transformPointToImage(event->localPos());
 
-    if(event->button() == Qt::LeftButton){
+    if(event->button() & Qt::LeftButton){
         // 如果是create 模式
         if(StateStorage::canvasMode == Canvas::CREATE){
              hasEdit_ = true;
@@ -139,7 +140,7 @@ void Canvas::mouseMoveEvent(QMouseEvent *event){
    // 编辑模式下
    else if (StateStorage::canvasMode == Canvas::EDIT){
        // 按住左键拖动
-       if(event->button() & Qt::LeftButton){
+       if(event->buttons() & Qt::LeftButton){
            for (Shape *shape: shapes_){
              if(shape->isSelected() || shape->hasSelectedVertex()){
                   shape->setShapeState(Shape::Moving);
@@ -211,7 +212,7 @@ QPointF Canvas::canBoundShapePoint(Shape *shape, QPointF currentPoint){
 void Canvas::mouseReleaseEvent(QMouseEvent *event){
     QPointF pos = transformPointToImage(event->localPos());
     // 完成拖动编辑
-    if(Qt::LeftButton & event->button()){
+    if(event->button() & Qt::LeftButton){
       for(Shape *shape: shapes_){
           if(shape->isMoving() && !shape->hasSelectedVertex()){
               if (!outOfPixmap(pos)){
