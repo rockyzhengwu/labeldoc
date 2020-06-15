@@ -52,6 +52,7 @@ std::vector<PageItem> TesseractHandler::tesseract_analysis_rects(cv::Mat input_i
             all_items.push_back(item);
         }
     }
+    api->End();
     return all_items;
 }
 
