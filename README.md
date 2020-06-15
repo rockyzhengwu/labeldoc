@@ -1,10 +1,11 @@
-This is a image label tool  especially for document analysis or OCR task. It just a common label tool for object detection or image segmentation so far,  some features about document analysis will be implement later;
+This is a image label tool  especially for document analysis or OCR task. you also can use this to for other task like object etection
 
-This project write by c++ use QT5, but some function translate from [labelme](https://github.com/wkentaro/labelme)
-and inspired by project [deeplabel](https://github.com/jveitchmichaelis/deeplabel)
+<img width="300" height="500" src="./doc/tessearct_auto_label.png"/>
+### auto label 
+   can use tesseract to auto label the text line 
+   
 
-#### udpate at 2020/06/09 
-add some binary algorithm:
+### binary algorithm:
 
  - Otsu - "A threshold selection method from gray-level histograms", 1979.
  - Bernsen - "Dynamic thresholding of gray-level images", 1986.
@@ -15,12 +16,12 @@ add some binary algorithm:
  - ISauvola - "ISauvola: Improved Sauvola’s Algorithm for Document Image Binarization", 2016.
  - WAN - "Binarization of Document Image Using Optimum Threshold Modification", 2018.
 
-![source](./doc/images/binary_source_example.png)
+<img width="300" height="500" src="./doc/images/binary_source_example.png"/>
 
 result:
-![result](./doc/images/binary_result_example.png)
+
+<img width="300" height="500" src="./doc/images/binary_result_example.png"/>
 
 
-
-
-![截图](./doc/images/labeltool.png)
+This project write by c++ use QT5, but some function translate from [labelme](https://github.com/wkentaro/labelme)
+and inspired by project [deeplabel](https://github.com/jveitchmichaelis/deeplabel)
