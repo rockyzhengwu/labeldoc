@@ -97,6 +97,7 @@ private:
     QStringList imageNames_;
     QListWidget *imageNameListWidget_;
 
+
     QString getLabelFileName(QString imagePath);
 
     AutoLabelDialog *autoLabelDialog_;

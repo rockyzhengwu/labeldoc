@@ -467,7 +467,17 @@ void MainWindow::startAutoLavelDialog(){
        qDebug()<<"ner dialog";
        autoLabelDialog_->setSourceImage(currImage_);
     }
+    QVector<Shape *> selectedShape = canvas_->getSelectedShape();
+    if(!selectedShape.isEmpty()){
+        QVector<QRectF> areas;
+        for(Shape *s : selectedShape){
+            QRectF rec = s->boundingRect();
+            areas.append(rec);
+        }
+        autoLabelDialog_->setSelectArea(areas);
+    }
     autoLabelDialog_->show();
+
 }
 
 void MainWindow::saveAutoLabelResult(){
@@ -490,4 +500,3 @@ void MainWindow::saveAutoLabelResult(){
     qDebug() << "canvas: shapes";
     canvas_->repaint();
 }
-

@@ -13,7 +13,8 @@
 
 AutoLabelDialog::AutoLabelDialog(QImage image, QWidget *parent) :
     QDialog (parent),
-    sourceImage_(image)
+    sourceImage_(image),
+    selectAreas_()
 {
 
    setWindowState(Qt::WindowMaximized);
@@ -92,10 +93,25 @@ void AutoLabelDialog::startModel(){
             return;
         }
         else {
-            cv::Mat bimg = QImageToCvMat(binaryImage_);
-            qDebug() << "start tessearct binary model" << bimg.size().width << " height "<< bimg.size().height << " binary" <<binaryImage_.format();
-            ocrResults_ = tesseractWrap_->tesseract_analysis(bimg.clone());
-            showOcrResult();
+            if(selectAreas_.isEmpty()){
+              cv::Mat bimg = QImageToCvMat(binaryImage_);
+              ocrResults_ = tesseractWrap_->tesseract_analysis(bimg.clone());
+              showOcrResult();
+            }
+            else {
+                std::vector<cv::Rect> areas;
+                for(QRectF rectf: selectAreas_){
+                    int x = rectf.x();
+                    int y = rectf.y();
+                    int width = rectf.width();
+                    int height = rectf.height();
+                    cv::Rect rect(x, y, width, height);
+                    areas.push_back(rect);
+                }
+                cv::Mat bimg = QImageToCvMat(binaryImage_);
+                ocrResults_ = tesseractWrap_->tesseract_analysis_rects(bimg.clone(), areas);
+                showOcrResult();
+            }
         }
     }
 }
@@ -319,4 +335,8 @@ void AutoLabelDialog::quitNotSave(){
 
 std::vector<ocrmodel::PageItem> AutoLabelDialog::getResult(){
     return ocrResults_;
+}
+
+void AutoLabelDialog::setSelectArea(QVector<QRectF> areas){
+    selectAreas_ = areas;
 }

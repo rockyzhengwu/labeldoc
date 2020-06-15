@@ -19,6 +19,7 @@ public:
     PageItemType getType();
     void addPoint(Point p);
     std::vector<Point> getPoints();
+    void moveTo(int x, int y);
 
 private:
     PageItemType type_;

@@ -30,6 +30,7 @@ public:
     explicit AutoLabelDialog(QImage sourceImage, QWidget *parent=nullptr);
     void setSourceImage(QImage sourceImage);
     std::vector<ocrmodel::PageItem> getResult();
+    void setSelectArea(QVector<QRectF> areas);
 
 //    ~BinaryDialog();
 
@@ -67,6 +68,7 @@ private:
 
     QImage sourceImage_;
     QImage binaryImage_;
+    QVector<QRectF> selectAreas_;
     // bernsen
     QLabel *thresholdLabel_;
     QSpinBox *thresholdSplider_;

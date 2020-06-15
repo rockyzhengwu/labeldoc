@@ -17,11 +17,13 @@ public:
     TesseractHandler();
     ~TesseractHandler();
    std::vector<PageItem> tesseract_analysis(cv::Mat input_image);
+   std::vector<PageItem> tesseract_analysis_rects(cv::Mat input_image, std::vector<cv::Rect> areas);
    void close();
 
 
 private:
      tesseract::TessBaseAPI *api;
+     std::vector<PageItem> analysis_textline(cv::Mat image, tesseract::TessBaseAPI * api=nullptr);
 };
 }
 

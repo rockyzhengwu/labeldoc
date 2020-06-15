@@ -31,6 +31,7 @@ public:
     void resetState();
     int shapeSize();
     void addShape(Shape *shape);
+    QVector<Shape *> getSelectedShape();
 
 
 protected:

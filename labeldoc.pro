@@ -63,6 +63,7 @@ SOURCES += \
         labelwidget.cpp \
         main.cpp \
         mainwindow.cpp \
+        models/commutil.cpp \
         models/pageitem.cpp \
         models/tesseract_model.cpp \
         shape.cpp \
@@ -77,6 +78,7 @@ HEADERS += \
         imageviewer.h \
         labelwidget.h \
         mainwindow.h \
+        models/commutil.h \
         models/pageitem.h \
         shape.h \
         statestorage.h \

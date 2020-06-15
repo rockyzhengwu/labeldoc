@@ -432,3 +432,15 @@ int Canvas::shapeSize(){
 void Canvas::addShape(Shape *shape){
     shapes_.append(shape);
 }
+
+
+QVector<Shape *> Canvas::getSelectedShape(){
+    QVector<Shape *> selected ;
+    for(Shape* s : shapes_){
+        if(s->isSelected()){
+            selected.push_back(s);
+        }
+    }
+    return selected;
+}
+
