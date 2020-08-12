@@ -44,5 +44,6 @@
         <file>icons/new-project.png</file>
         <file>icons/binary.png</file>
         <file>icons/analysis.png</file>
+        <file>icons/open_pdf.png</file>
     </qresource>
 </RCC>

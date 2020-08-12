@@ -51,6 +51,7 @@ protected slots:
 
 
 
+
 private:
     QAction *openFileAction_;
     QAction *openDirAction_;
@@ -68,6 +69,7 @@ private:
     QAction *deleteShape_;
 
     QAction *binaryAction_;
+
 
 //    QAction *newProject_;
     QAction *saveAction_;
@@ -101,6 +103,7 @@ private:
     QString getLabelFileName(QString imagePath);
 
     AutoLabelDialog *autoLabelDialog_;
+
 
 };
 

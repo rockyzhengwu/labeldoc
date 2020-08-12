@@ -104,6 +104,7 @@ void MainWindow::createActions(){
 
     binaryAction_ = new QAction(QPixmap(":/icons/icons/analysis.png"), "Auto Label");
     connect(binaryAction_, &QAction::triggered, this, [this]{this->startAutoLavelDialog();});
+
 }
 
 
@@ -500,3 +501,4 @@ void MainWindow::saveAutoLabelResult(){
     qDebug() << "canvas: shapes";
     canvas_->repaint();
 }
+

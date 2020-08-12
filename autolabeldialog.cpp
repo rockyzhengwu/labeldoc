@@ -19,6 +19,7 @@ AutoLabelDialog::AutoLabelDialog(QImage image, QWidget *parent) :
 
    setWindowState(Qt::WindowMaximized);
    createUI();
+   mserDetector_=nullptr;
 }
 
 //BinaryDialog::~BinaryDialog(){
@@ -69,6 +70,7 @@ void AutoLabelDialog::createModelUI(){
     QVBoxLayout *modelLayout = new QVBoxLayout();
 
     models_ = new QComboBox();
+    models_->addItem("mser");
     models_->addItem("tesseract");
     modelButton_ = new QPushButton("Run Model");
     modelLayout->addWidget(models_);
@@ -78,41 +80,59 @@ void AutoLabelDialog::createModelUI(){
 
     connect(modelButton_, SIGNAL(clicked()), this, SLOT(startModel()));
 }
+void AutoLabelDialog::runTesseract(){
+   if (tesseractWrap_==nullptr){
+       tesseractWrap_ = new ocrmodel::TesseractHandler();
+   }
+
+   qDebug() << "start tesseract";
+   if(binaryImage_.isNull()){
+       qDebug() << "analysis source file";
+       tesseractWrap_->tesseract_analysis(QImageToCvMat(sourceImage_));
+       return;
+   }
+   else {
+       if(selectAreas_.isEmpty()){
+         cv::Mat bimg = QImageToCvMat(binaryImage_);
+         ocrResults_ = tesseractWrap_->tesseract_analysis(bimg.clone());
+         showOcrResult();
+       }
+       else {
+           std::vector<cv::Rect> areas;
+           for(QRectF rectf: selectAreas_){
+               int x = rectf.x();
+               int y = rectf.y();
+               int width = rectf.width();
+               int height = rectf.height();
+               cv::Rect rect(x, y, width, height);
+               areas.push_back(rect);
+           }
+           cv::Mat bimg = QImageToCvMat(binaryImage_);
+           ocrResults_ = tesseractWrap_->tesseract_analysis_rects(bimg.clone(), areas);
+           showOcrResult();
+       }
+       repaint();
+   }
+}
+
+void AutoLabelDialog::runMser(){
+    qDebug()<< "run mser\n" ;
+    if(mserDetector_==nullptr){
+        mserDetector_ = new ocrmodel::MserTextDetector();
+    }
+    cv::Mat bimg = QImageToCvMat(sourceImage_);
+    qDebug()<<"start get regions\n";
+    mserDetector_->getmserRegions(bimg);
+}
+
 
 void AutoLabelDialog::startModel(){
     QString modelName = models_->currentText();
     if(modelName=="tesseract"){
-        if (tesseractWrap_==nullptr){
-            tesseractWrap_ = new ocrmodel::TesseractHandler();
-        }
-
-        qDebug() << "start tesseract";
-        if(binaryImage_.isNull()){
-            qDebug() << "analysis source file";
-            tesseractWrap_->tesseract_analysis(QImageToCvMat(sourceImage_));
-            return;
-        }
-        else {
-            if(selectAreas_.isEmpty()){
-              cv::Mat bimg = QImageToCvMat(binaryImage_);
-              ocrResults_ = tesseractWrap_->tesseract_analysis(bimg.clone());
-              showOcrResult();
-            }
-            else {
-                std::vector<cv::Rect> areas;
-                for(QRectF rectf: selectAreas_){
-                    int x = rectf.x();
-                    int y = rectf.y();
-                    int width = rectf.width();
-                    int height = rectf.height();
-                    cv::Rect rect(x, y, width, height);
-                    areas.push_back(rect);
-                }
-                cv::Mat bimg = QImageToCvMat(binaryImage_);
-                ocrResults_ = tesseractWrap_->tesseract_analysis_rects(bimg.clone(), areas);
-                showOcrResult();
-            }
-        }
+        runTesseract();
+    }
+    if(modelName=="mser"){
+        runMser();
     }
 }
 

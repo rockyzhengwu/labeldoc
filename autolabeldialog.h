@@ -21,6 +21,7 @@
 
 #include "models/pageitem.h"
 #include "models/tesseract_model.h"
+#include "models/msertextdetector.h"
 
 class AutoLabelDialog: public QDialog
 {
@@ -88,6 +89,12 @@ private:
     void createModelUI();
     void createUI();
     void showOcrResult();
+    void runTesseract();
+
+    ocrmodel::MserTextDetector *mserDetector_;
+    void runMser();
+
+
 
 
     // save

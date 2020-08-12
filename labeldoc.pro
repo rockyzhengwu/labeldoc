@@ -31,7 +31,7 @@ INCLUDEPATH += /usr/local/include/opencv4 \
 
 
 LIBS += -L/usr/local/opt/opencv/lib
-LIBS += -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_imgcodecs -lopencv_tracking -lopencv_video -lopencv_videoio -lopencv_dnn
+LIBS += -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_imgcodecs -lopencv_tracking -lopencv_video -lopencv_videoio -lopencv_dnn -lopencv_ml
 
 LIBS += -L/usr/local/lib -llept -ltesseract
 
@@ -64,10 +64,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         models/commutil.cpp \
+        models/erfilter.cpp \
+        models/msertextdetector.cpp \
         models/pageitem.cpp \
         models/tesseract_model.cpp \
+        models/mser.cpp \
         shape.cpp \
         statestorage.cpp
+
 
 HEADERS += \
         autolabeldialog.h \
@@ -79,7 +83,10 @@ HEADERS += \
         labelwidget.h \
         mainwindow.h \
         models/commutil.h \
+        models/erfilter.hpp \
+        models/msertextdetector.h \
         models/pageitem.h \
+        models/mser.h \
         shape.h \
         statestorage.h \
         models/tesseract_model.h
